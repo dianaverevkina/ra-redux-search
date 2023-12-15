@@ -1,10 +1,8 @@
-import { changSearchField, searchFailure, searchRequest, searchSuccess } from "./slice"
-import { take, put, spawn, takeLatest, call, retry} from 'redux-saga/effects';
-import searchSlice from './slice'
+import { searchFailure, searchRequest, searchSuccess } from "./slice"
+import { take, put, spawn, takeLatest, retry} from 'redux-saga/effects';
 
 async function searchItems(search) {
   const params = new URLSearchParams({q: search});
-  console.log(params)
   const response = await fetch(`http://localhost:7070/api/search?${params}`);
   if (!response.ok) {
     throw new Error(response.statusText)
@@ -12,6 +10,7 @@ async function searchItems(search) {
 
   return await response.json();
 }
+
 function* handleSearchItemsSaga(action) {
   try {
     const retryCount = 3;
@@ -33,7 +32,7 @@ function* watchChangeSearchSaga() {
 function* watchSearchRequestSaga() {
   while(true) {
     yield take('search/searchRequest');
-    yield takeLatest( 'search/searchRequest', handleSearchItemsSaga)
+    yield takeLatest('search/searchRequest', handleSearchItemsSaga)
   }
 }
 

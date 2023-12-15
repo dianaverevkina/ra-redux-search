@@ -2,7 +2,6 @@ import { useSelector } from 'react-redux'
 
 export const Items = () => {
   const { items, loading, error, search } = useSelector(state => state.search)
-  console.log(error)
 
   let content; 
   
